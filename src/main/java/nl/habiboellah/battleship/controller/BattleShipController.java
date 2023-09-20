@@ -1,7 +1,10 @@
 package nl.habiboellah.battleship.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.habiboellah.battleship.model.JoinRequest;
+import nl.habiboellah.battleship.model.ShipPlacementRequest;
 import nl.habiboellah.battleship.model.mapper.PlayerMapper;
+import nl.habiboellah.battleship.model.mapper.ShipPlacementMapper;
 import nl.habiboellah.battleship.service.BattleShipService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,10 +27,15 @@ public class BattleShipController {
 
     private final PlayerMapper playerMapper;
 
+    private final ObjectMapper objectMapper;
+    private final ShipPlacementMapper shipPlacementMapper;
+
     @Autowired
-    public BattleShipController(BattleShipService service, PlayerMapper playerMapper) {
+    public BattleShipController(BattleShipService service, PlayerMapper playerMapper, ObjectMapper objectMapper, ShipPlacementMapper shipPlacementMapper) {
         this.service = service;
         this.playerMapper = playerMapper;
+        this.objectMapper = objectMapper;
+        this.shipPlacementMapper = shipPlacementMapper;
     }
 
     @MessageMapping("/join")
@@ -42,4 +50,11 @@ public class BattleShipController {
         service.processPlayerDisconnect(userId);
         LOG.info("User with ID '{}' closed the connection", userId);
     }
+
+    @MessageMapping("/place-ship")
+    public void placeShip(@RequestBody final ShipPlacementRequest request, Principal principal) throws Exception {
+        LOG.info("User with id {} sent ship placement request {}", principal.getName(), objectMapper.writeValueAsString(request));
+        service.processShipPlacementRequest(request.getMatchId(), principal.getName(), shipPlacementMapper.fromShipPlacementRequest(request));
+    }
+
 }

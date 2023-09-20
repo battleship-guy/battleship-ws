@@ -77,6 +77,19 @@ stompClient.onConnect = (frame) => {
                     $("#ship-id").append(option);
                 }
                 break;
+            case "VALID_SHIP_PLACEMENT":
+                showUserMessage("Ship placed! " + responseJson.responseBody.unplacedShips.length + " more to go.");
+                $("#ship-id > option").remove();
+                for (let i = 0; i < responseJson.responseBody.unplacedShips.length; i++) {
+                    let option = document.createElement("option");
+                    option.text = responseJson.responseBody.unplacedShips[i].name;
+                    option.value = responseJson.responseBody.unplacedShips[i].id;
+                    $("#ship-id").append(option);
+                }
+                break;
+            case "INVALID_SHIP_PLACEMENT":
+                showUserMessage("Invalid ship placement!");
+                break;
         }
     }
 
@@ -119,6 +132,18 @@ function showControlMessage(response) {
     $("#game-data").append("<tr><td>" + response + "</td></tr>");
 }
 
+function placeShip() {
+    stompClient.publish({
+        destination: "/place-ship",
+        body: JSON.stringify({
+            'matchId': $("#match-id").val(),
+            'position': $("#position").val(),
+            'shipId': $("[name=ship-id]").val(),
+            'direction': $("[name=direction]:checked").val()
+        })
+    });
+}
+
 $(function () {
     $("form").on('submit', (e) => e.preventDefault());
     $( "#join" ).click(() => {
@@ -131,5 +156,8 @@ $(function () {
     $( "#disconnect" ).click(() => {
         showUserMessage($("#name").val() + " left.");
         disconnect();
+    });
+    $( "#place-ship" ).click(() => {
+        placeShip();
     });
 });

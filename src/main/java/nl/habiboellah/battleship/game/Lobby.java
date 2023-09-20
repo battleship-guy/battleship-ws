@@ -62,4 +62,11 @@ public class Lobby {
     public Optional<Match> findMatch(Player player) {
         return matches.findMatch(player);
     }
+    public Optional<Match> findMatch(String matchId) {
+        return matches.findMatch(matchId);
+    }
+
+    public Player getPlayerByUserId(String userId) {
+        return players.getPlayerByUserId(userId);
+    }
 }

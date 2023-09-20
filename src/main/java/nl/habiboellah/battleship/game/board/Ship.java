@@ -1,5 +1,7 @@
 package nl.habiboellah.battleship.game.board;
 
+import java.util.Arrays;
+
 public enum Ship {
     AIRCRAFT_CARRIER("Aircraft Carrier", 5),
     BATTLESHIP("Battleship", 4),
@@ -21,5 +23,12 @@ public enum Ship {
 
     public Integer getLength() {
         return length;
+    }
+
+    public static Ship getById(int id) {
+        return Arrays.stream(Ship.values())
+                .filter(s -> s.ordinal() == id)
+                .findFirst()
+                .orElseThrow();
     }
 }

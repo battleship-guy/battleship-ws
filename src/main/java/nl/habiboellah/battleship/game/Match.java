@@ -1,5 +1,6 @@
 package nl.habiboellah.battleship.game;
 
+import nl.habiboellah.battleship.game.board.Board;
 import nl.habiboellah.battleship.model.Player;
 import nl.habiboellah.battleship.model.collection.PlayerList;
 
@@ -12,6 +13,8 @@ public class Match {
     private final Player playerTwo;
     private final String id;
 
+    private final Board board;
+
     private Player playerAtTurn;
 
     private Phase matchPhase;
@@ -21,6 +24,11 @@ public class Match {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.matchPhase = Phase.SETUP;
+        this.board = new Board(playerOne, playerTwo);
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     public enum Phase {
