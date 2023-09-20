@@ -67,7 +67,7 @@ stompClient.onConnect = (frame) => {
     let handleGameStateUpdate = function(responseJson) {
         switch (responseJson.responseBody.matchPhase) {
             case "SETUP":
-                showUserMessage("Starting match against " + responseJson.responseBody.opponentName + ". Place your boats.")
+                showUserMessage("Starting match against " + responseJson.responseBody.opponentName + ". Place your ships.")
         }
     }
 
