@@ -2,6 +2,8 @@ package nl.habiboellah.battleship.model;
 
 import nl.habiboellah.battleship.game.MatchSetupStatus;
 
+import java.util.List;
+
 public class MatchSetupResponse {
     private final String playerName;
 
@@ -11,11 +13,14 @@ public class MatchSetupResponse {
 
     private final MatchSetupStatus status;
 
-    public MatchSetupResponse(String playerName, String opponentName, String matchId, MatchSetupStatus status) {
+    private final List<ShipModel> unplacedShips;
+
+    public MatchSetupResponse(String playerName, String opponentName, String matchId, MatchSetupStatus status, List<ShipModel> unplacedShips) {
         this.playerName = playerName;
         this.opponentName = opponentName;
         this.matchId = matchId;
         this.status = status;
+        this.unplacedShips = unplacedShips;
     }
 
     public String getPlayerName() {
@@ -32,5 +37,9 @@ public class MatchSetupResponse {
 
     public MatchSetupStatus getStatus() {
         return status;
+    }
+
+    public List<ShipModel> getUnplacedShips() {
+        return unplacedShips;
     }
 }

@@ -69,6 +69,14 @@ stompClient.onConnect = (frame) => {
             case "MATCH_STARTED":
                 showUserMessage("Starting match against " + responseJson.responseBody.opponentName + ". Place your ships.")
                 $("#setup-section").show();
+                $("#match-id").val(responseJson.responseBody.matchId);
+                for (let i = 0; i < responseJson.responseBody.unplacedShips.length; i++) {
+                    let option = document.createElement("option");
+                    option.text = responseJson.responseBody.unplacedShips[i].name;
+                    option.value = responseJson.responseBody.unplacedShips[i].id;
+                    $("#ship-id").append(option);
+                }
+                break;
         }
     }
 

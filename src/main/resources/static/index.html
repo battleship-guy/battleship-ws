@@ -62,21 +62,16 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <label for="num-boats">Number of boats left: </label>
-                                    <span id="num-boats">5</span>
-                                    <input type="hidden" name="match-id">
+                                    <input id="match-id" type="hidden" name="match-id">
+                                    <label for="ship-id">Ship: </label>
+                                    <select id="ship-id" name="ship-id" class="form-control">
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <label for="position">Position: </label>
                                     <input id="position" type="text" name="position" class="form-control" placeholder="position" maxlength="3">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="boat-length">Boat length: </label>
-                                    <input id="boat-length" type="number" name="boats-length" class="form-control" min="2" max="5">
                                 </td>
                             </tr>
                             <tr>
@@ -90,7 +85,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <button id="control" class="btn btn-default" type="submit">Send</button>
+                    <button id="place-ship" class="btn btn-default" type="submit">Place ship</button>
                 </div>
             </form>
         </div>
