@@ -10,14 +10,16 @@ public class Lobby {
 
     private static Lobby lobby;
     private final PlayerList players;
+    private final MatchList matches;
 
-    private Lobby(PlayerList players) {
+    private Lobby(PlayerList players, MatchList matches) {
         this.players = players;
+        this.matches = matches;
     }
 
     public static Lobby getInstance() {
         if (lobby == null) {
-            lobby = new Lobby(new PlayerList());
+            lobby = new Lobby(new PlayerList(), new MatchList());
         }
         return lobby;
     }
@@ -31,6 +33,7 @@ public class Lobby {
     public enum JoinStatus {
         PLAYER_ENTERED,
         PLAYER_LEFT,
+        PLAYER_MATCHED,
         PLAYER_ALREADY_EXISTS,
         LOBBY_FULL;
     }
@@ -41,8 +44,22 @@ public class Lobby {
         } else if(players.size() >= MAX_PLAYERS) {
             return JoinStatus.LOBBY_FULL;
         } else {
+            Optional<Player> unmatchedPlayer = findUnmatchedPlayer();
             players.add(player);
-            return JoinStatus.PLAYER_ENTERED;
+            if (unmatchedPlayer.isPresent()) {
+                matches.add(new Match(unmatchedPlayer.get(), player));
+                return JoinStatus.PLAYER_MATCHED;
+            } else {
+                return JoinStatus.PLAYER_ENTERED;
+            }
         }
+    }
+
+    private Optional<Player> findUnmatchedPlayer() {
+        return players.stream().filter(p -> !matches.getPlayers().toList().contains(p)).findFirst();
+    }
+
+    public Optional<Match> findMatch(Player player) {
+        return matches.findMatch(player);
     }
 }

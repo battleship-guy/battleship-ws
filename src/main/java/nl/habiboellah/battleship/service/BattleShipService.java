@@ -20,15 +20,30 @@ public class BattleShipService {
     @Autowired
     private ControlMessageService controlMessageService;
 
+    @Autowired
+    private GameStateResponseMapper gameStateResponseMapper;
+
     public void processPlayerJoinRequest(Player player) {
         Lobby lobby = Lobby.getInstance();
         Lobby.JoinStatus status = lobby.join(player);
-        JoinResponse response = new JoinResponse(status, player.getName());
         switch (status) {
             case PLAYER_ENTERED -> {
+                JoinResponse response = new JoinResponse(status, player.getName());
                 controlMessageService.broadcastSystemMessage(new ControlMessage(LOBBY_UPDATE, response));
             }
+            case PLAYER_MATCHED -> {
+                JoinResponse joinNotice = new JoinResponse(PLAYER_ENTERED, player.getName());
+                controlMessageService.broadcastSystemMessage(new ControlMessage(LOBBY_UPDATE, joinNotice));
+
+                Match match = lobby.findMatch(player).orElseThrow();
+                GameStateResponse response = gameStateResponseMapper.fromMatch(match, player);
+                controlMessageService.sendSystemMessageToUser(player.getId(), new ControlMessage(GAME_STATE_UPDATE, response));
+                Player opponent = match.getOpponent(player).orElseThrow();
+                GameStateResponse opponentResponse = gameStateResponseMapper.fromMatch(match, opponent);
+                controlMessageService.sendSystemMessageToUser(opponent.getId(), new ControlMessage(GAME_STATE_UPDATE, opponentResponse));
+            }
             case PLAYER_ALREADY_EXISTS, LOBBY_FULL -> {
+                JoinResponse response = new JoinResponse(status, player.getName());
                 controlMessageService.sendSystemMessageToUser(player.getId(), new ControlMessage(LOBBY_UPDATE, response));
             }
         }

@@ -37,24 +37,37 @@ stompClient.onConnect = (frame) => {
 
         switch (responseJson.eventType) {
             case "LOBBY_UPDATE":
-                let playerName = responseJson.responseBody.playerName;
-                switch (responseJson.responseBody.status) {
-                    case "PLAYER_ENTERED":
-                        showUserMessage(playerName + " joined.");
-                        return;
-                    case "PLAYER_LEFT":
-                        showUserMessage(playerName + " left.");
-                        return;
-                    case "PLAYER_ALREADY_EXISTS":
-                        showUserMessage("Name \"" + playerName + "\" is already in use.");
-                        disconnect();
-                        return;
-                    case "LOBBY_FULL":
-                        showUserMessage("Lobby is full, cannot join game.");
-                        disconnect();
-                        return;
-                }
-                return;
+                handleLobbyUpdate(responseJson);
+                break;
+            case "GAME_STATE_UPDATE":
+                handleGameStateUpdate(responseJson);
+        }
+    }
+
+    let handleLobbyUpdate = function(responseJson) {
+        let playerName = responseJson.responseBody.playerName;
+        switch (responseJson.responseBody.status) {
+            case "PLAYER_ENTERED":
+                showUserMessage(playerName + " joined.");
+                break;
+            case "PLAYER_LEFT":
+                showUserMessage(playerName + " left.");
+                break;
+            case "PLAYER_ALREADY_EXISTS":
+                showUserMessage("Name \"" + playerName + "\" is already in use.");
+                disconnect();
+                break;
+            case "LOBBY_FULL":
+                showUserMessage("Lobby is full, cannot join game.");
+                disconnect();
+                break;
+        }
+    }
+
+    let handleGameStateUpdate = function(responseJson) {
+        switch (responseJson.responseBody.matchPhase) {
+            case "SETUP":
+                showUserMessage("Starting match against " + responseJson.responseBody.opponentName + ". Place your boats.")
         }
     }
 
