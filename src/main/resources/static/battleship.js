@@ -41,6 +41,10 @@ stompClient.onConnect = (frame) => {
                 break;
             case "MATCH_SETUP_UPDATE":
                 handleMatchSetupUpdate(responseJson);
+                break;
+            case "OPPONENT_LEFT":
+                handleOpponentLeft();
+                break;
         }
     }
 
@@ -70,27 +74,31 @@ stompClient.onConnect = (frame) => {
                 showUserMessage("Starting match against " + responseJson.responseBody.opponentName + ". Place your ships.")
                 $("#setup-section").show();
                 $("#match-id").val(responseJson.responseBody.matchId);
-                for (let i = 0; i < responseJson.responseBody.unplacedShips.length; i++) {
-                    let option = document.createElement("option");
-                    option.text = responseJson.responseBody.unplacedShips[i].name;
-                    option.value = responseJson.responseBody.unplacedShips[i].id;
-                    $("#ship-id").append(option);
-                }
+                updateListWithUnplacedShips(responseJson.responseBody.unplacedShips);
                 break;
             case "VALID_SHIP_PLACEMENT":
                 showUserMessage("Ship placed! " + responseJson.responseBody.unplacedShips.length + " more to go.");
-                $("#ship-id > option").remove();
-                for (let i = 0; i < responseJson.responseBody.unplacedShips.length; i++) {
-                    let option = document.createElement("option");
-                    option.text = responseJson.responseBody.unplacedShips[i].name;
-                    option.value = responseJson.responseBody.unplacedShips[i].id;
-                    $("#ship-id").append(option);
-                }
+                updateListWithUnplacedShips(responseJson.responseBody.unplacedShips);
                 break;
             case "INVALID_SHIP_PLACEMENT":
                 showUserMessage("Invalid ship placement!");
                 break;
         }
+    }
+
+    let updateListWithUnplacedShips = function(unplacedShips) {
+        $("#ship-id > option").remove();
+        for (let i = 0; i < unplacedShips.length; i++) {
+            let option = document.createElement("option");
+            option.text = unplacedShips[i].name;
+            option.value = unplacedShips[i].id;
+            $("#ship-id").append(option);
+        }
+    }
+
+    let handleOpponentLeft = function() {
+        showUserMessage("Match ended, because your opponent left the game.");
+        endMatch();
     }
 
     stompClient.subscribe('/topic/control-messages', handleIncomingControlMessage);
@@ -124,6 +132,10 @@ function setConnected(connected, connecting) {
     }
 }
 
+function endMatch() {
+    $("#setup-section").hide();
+}
+
 function showUserMessage(response) {
     $("#notifications").append("<tr><td>" + response + "</td></tr>");
 }
@@ -155,6 +167,7 @@ $(function () {
     });
     $( "#disconnect" ).click(() => {
         showUserMessage($("#name").val() + " left.");
+        endMatch();
         disconnect();
     });
     $( "#place-ship" ).click(() => {

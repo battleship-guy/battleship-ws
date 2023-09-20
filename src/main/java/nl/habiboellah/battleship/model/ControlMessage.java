@@ -4,7 +4,8 @@ public class ControlMessage {
     public enum EventType {
         ERROR,
         LOBBY_UPDATE,
-        MATCH_SETUP_UPDATE
+        MATCH_SETUP_UPDATE,
+        OPPONENT_LEFT
     }
 
     private final EventType eventType;

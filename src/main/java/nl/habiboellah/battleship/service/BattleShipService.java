@@ -52,6 +52,13 @@ public class BattleShipService {
     public void processPlayerDisconnect(String userId) {
         Lobby lobby = Lobby.getInstance();
         Player player = lobby.leave(userId);
+        lobby.findMatch(player).ifPresent(
+                match -> {
+                    lobby.endMatch(match);
+                    Player opponent = match.getOpponent(player).orElseThrow();
+                    controlMessageService.sendSystemMessageToUser(opponent.getId(), new ControlMessage(OPPONENT_LEFT, new SimpleResponse("Match ended, because your opponent left.")));
+                }
+        );
         JoinResponse response = new JoinResponse(PLAYER_LEFT, player.getName());
         controlMessageService.broadcastSystemMessage(new ControlMessage(LOBBY_UPDATE, response));
     }

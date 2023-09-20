@@ -30,6 +30,10 @@ public class Lobby {
         return player;
     }
 
+    public void endMatch(Match match) {
+        matches.remove(match);
+    }
+
     public enum JoinStatus {
         PLAYER_ENTERED,
         PLAYER_LEFT,
