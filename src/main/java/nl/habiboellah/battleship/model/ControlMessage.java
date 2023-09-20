@@ -3,7 +3,7 @@ package nl.habiboellah.battleship.model;
 public class ControlMessage {
     public enum EventType {
         LOBBY_UPDATE,
-        GAME_STATE_UPDATE
+        MATCH_SETUP_UPDATE
     }
 
     private final EventType eventType;

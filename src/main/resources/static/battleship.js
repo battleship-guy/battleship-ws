@@ -39,8 +39,8 @@ stompClient.onConnect = (frame) => {
             case "LOBBY_UPDATE":
                 handleLobbyUpdate(responseJson);
                 break;
-            case "GAME_STATE_UPDATE":
-                handleGameStateUpdate(responseJson);
+            case "MATCH_SETUP_UPDATE":
+                handleMatchSetupUpdate(responseJson);
         }
     }
 
@@ -64,9 +64,9 @@ stompClient.onConnect = (frame) => {
         }
     }
 
-    let handleGameStateUpdate = function(responseJson) {
-        switch (responseJson.responseBody.matchPhase) {
-            case "SETUP":
+    let handleMatchSetupUpdate = function(responseJson) {
+        switch (responseJson.responseBody.status) {
+            case "MATCH_STARTED":
                 showUserMessage("Starting match against " + responseJson.responseBody.opponentName + ". Place your ships.")
                 $("#setup-section").show();
         }
