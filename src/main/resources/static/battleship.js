@@ -42,6 +42,9 @@ stompClient.onConnect = (frame) => {
                     case "PLAYER_ENTERED":
                         showUserMessage(playerName + " joined.");
                         return;
+                    case "PLAYER_LEFT":
+                        showUserMessage(playerName + " left.");
+                        return;
                     case "PLAYER_ALREADY_EXISTS":
                         showUserMessage("Name \"" + playerName + "\" is already in use.");
                         disconnect();

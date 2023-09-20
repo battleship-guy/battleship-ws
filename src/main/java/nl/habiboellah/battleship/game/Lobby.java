@@ -21,8 +21,15 @@ public class Lobby {
         return lobby;
     }
 
+    public Player leave(String userId) {
+        Player player = players.getPlayerByUserId(userId);
+        players.remove(player);
+        return player;
+    }
+
     public enum JoinStatus {
         PLAYER_ENTERED,
+        PLAYER_LEFT,
         PLAYER_ALREADY_EXISTS,
         LOBBY_FULL;
     }

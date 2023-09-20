@@ -23,4 +23,11 @@ public class PlayerList extends ArrayList<Player> {
         }
         return super.add(player);
     }
+
+    public Player getPlayerByUserId(String userId) {
+        return this.stream()
+                .filter(p -> p.getId().equals(userId))
+                .findFirst()
+                .orElseThrow();
+    }
 }

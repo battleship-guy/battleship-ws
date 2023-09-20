@@ -7,6 +7,7 @@ import nl.habiboellah.battleship.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static nl.habiboellah.battleship.game.Lobby.JoinStatus.PLAYER_LEFT;
 import static nl.habiboellah.battleship.model.ControlMessage.EventType.LOBBY_UPDATE;
 
 @Service
@@ -28,4 +29,10 @@ public class BattleShipService {
         }
     }
 
+    public void processPlayerDisconnect(String userId) {
+        Lobby lobby = Lobby.getInstance();
+        Player player = lobby.leave(userId);
+        JoinResponse response = new JoinResponse(PLAYER_LEFT, player.getName());
+        controlMessageService.broadcastSystemMessage(new ControlMessage(LOBBY_UPDATE, response));
+    }
 }

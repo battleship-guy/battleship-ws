@@ -19,6 +19,8 @@ import java.util.Objects;
 
 @Controller
 public class BattleShipController {
+    private final Logger LOG = LoggerFactory.getLogger(BattleShipController.class);
+
     private final BattleShipService service;
 
     private final PlayerMapper playerMapper;
@@ -34,4 +36,11 @@ public class BattleShipController {
         service.processPlayerJoinRequest(playerMapper.fromJoinRequest(joinRequest, principal));
     }
 
+    @EventListener
+    public void onSocketDisconnected(SessionDisconnectEvent event) {
+        StompHeaderAccessor sha = StompHeaderAccessor.wrap(event.getMessage());
+        String userId = Objects.requireNonNull(sha.getUser()).getName();
+        service.processPlayerDisconnect(userId);
+        LOG.info("User with ID '{}' closed the connection", userId);
+    }
 }

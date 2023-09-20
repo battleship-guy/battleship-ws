@@ -3,8 +3,9 @@ package nl.habiboellah.battleship.model.collection;
 import nl.habiboellah.battleship.model.Player;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.NoSuchElementException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayerListTest {
     @Test
@@ -33,5 +34,18 @@ public class PlayerListTest {
         assertTrue(list.contains(playerOne));
         assertTrue(list.contains(playerTwo));
         assertFalse(list.contains(playerThree));
+    }
+
+    @Test
+    public void testGetPlayerByUserId() {
+        Player playerOne = new Player("Bob", "1");
+        Player playerTwo = new Player("Bob", "2");
+        Player playerThree = new Player("Bonny", "3");
+
+        PlayerList list = new PlayerList(playerOne, playerTwo, playerThree);
+        assertEquals(playerTwo, list.getPlayerByUserId("2"));
+        assertThrows(NoSuchElementException.class, () -> {
+            list.getPlayerByUserId("4");
+        });
     }
 }
