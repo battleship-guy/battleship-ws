@@ -2,7 +2,8 @@ package nl.habiboellah.battleship.game;
 
 import nl.habiboellah.battleship.model.Player;
 import nl.habiboellah.battleship.model.collection.PlayerList;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Optional;
 
 public class Lobby {
     public static final int MAX_PLAYERS = 4;

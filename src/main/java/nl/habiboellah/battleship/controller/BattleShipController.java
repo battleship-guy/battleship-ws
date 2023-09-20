@@ -1,6 +1,5 @@
 package nl.habiboellah.battleship.controller;
 
-import nl.habiboellah.battleship.WebSocketConfig;
 import nl.habiboellah.battleship.model.JoinRequest;
 import nl.habiboellah.battleship.model.mapper.PlayerMapper;
 import nl.habiboellah.battleship.service.BattleShipService;

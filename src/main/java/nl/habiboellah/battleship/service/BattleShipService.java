@@ -1,13 +1,18 @@
 package nl.habiboellah.battleship.service;
 
 import nl.habiboellah.battleship.game.Lobby;
+import nl.habiboellah.battleship.game.Match;
 import nl.habiboellah.battleship.model.ControlMessage;
+import nl.habiboellah.battleship.model.GameStateResponse;
 import nl.habiboellah.battleship.model.JoinResponse;
 import nl.habiboellah.battleship.model.Player;
+import nl.habiboellah.battleship.model.mapper.GameStateResponseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static nl.habiboellah.battleship.game.Lobby.JoinStatus.PLAYER_ENTERED;
 import static nl.habiboellah.battleship.game.Lobby.JoinStatus.PLAYER_LEFT;
+import static nl.habiboellah.battleship.model.ControlMessage.EventType.GAME_STATE_UPDATE;
 import static nl.habiboellah.battleship.model.ControlMessage.EventType.LOBBY_UPDATE;
 
 @Service
