@@ -68,6 +68,7 @@ stompClient.onConnect = (frame) => {
         switch (responseJson.responseBody.matchPhase) {
             case "SETUP":
                 showUserMessage("Starting match against " + responseJson.responseBody.opponentName + ". Place your ships.")
+                $("#setup-section").show();
         }
     }
 

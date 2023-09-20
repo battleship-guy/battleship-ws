@@ -49,12 +49,47 @@
             </table>
         </div>
     </div>
-    <div class="row">
+    <div id="setup-section" class="row" hidden>
         <div class="col-md-12">
             <form class="form-inline">
                 <div class="form-group">
-                    <input id="topic" type="text" name="topic" class="form-control" placeholder="topic"><br>
-                    <textarea id="control-message" class="form-control" placeholder="enter json control message..."></textarea><br>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Game setup:</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <label for="num-boats">Number of boats left: </label>
+                                    <span id="num-boats">5</span>
+                                    <input type="hidden" name="match-id">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="position">Position: </label>
+                                    <input id="position" type="text" name="position" class="form-control" placeholder="position" maxlength="3">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="boat-length">Boat length: </label>
+                                    <input id="boat-length" type="number" name="boats-length" class="form-control" min="2" max="5">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Boat direction: </label>
+                                    <label for="direction_hor">Horizontal</label>
+                                    <input id="direction_hor" type="radio" name="direction" class="form-control" value="H">
+                                    <label for="direction_vert">Vertical</label>
+                                    <input id="direction_vert" type="radio" name="direction" class="form-control" value="V">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <button id="control" class="btn btn-default" type="submit">Send</button>
                 </div>
             </form>
